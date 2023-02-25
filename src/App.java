@@ -28,10 +28,15 @@ public class App {
             int totalNewsNum = 9 * pageCount;
             for (int i = 0; i < pageCount; i++) {
                 Document page = getPage(newsPageUrl + (i + 1));
+                
+                // метод select возвращает список элементов
+                // получаем блок из 9 новостей
                 var newsBlock = page.select(
                     "body > div#main > div#container > div#content > div#news > div.news_line > div"
                 );
+                
                 for (Element newsEl : newsBlock) {
+                    // пробегаемся по новости и парсим определенный элемент данных
                     var tags = newsEl.select("div.markersContainer > a");
                     var date = newsEl.select("a > div.dateOnImage");
                     String newsUrlStr = webSiteUrl + newsEl.select("a").attr("href");
@@ -42,11 +47,13 @@ public class App {
                     }
                     String titleStr = newsEl.select("a > div.headline").get(0).text();
 
+                    // получаем полную страницу новости для извлечения её текста
                     Document newsPage = getPage(newsUrlStr);
                     String newsTextStr = getNewsTextFromPage(newsPage);
 
                     dataLines.add(new String[] {newsUrlStr, dateStr, tagsStr, titleStr, newsTextStr});
 
+                    // скачиваем превью новости
                     String imageUrl = newsEl.select("a > img").attr("src");
                     imageUrl = webSiteUrl +  imageUrl.replace("..", "");
                     downloadNewsPreview(imageUrl);
