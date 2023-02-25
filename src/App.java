@@ -55,7 +55,7 @@ public class App {
                     System.out.print("\033[H\033[2J");
 
                     newsNum++;
-                    System.out.print("Осталось " + (totalNewsNum - newsNum) + " из " + totalNewsNum);
+                    System.out.print("Осталось " + (totalNewsNum - newsNum) + " из " + totalNewsNum + " новостей");
                 }
             }
             CsvWriter csvWriter = new CsvWriter();
