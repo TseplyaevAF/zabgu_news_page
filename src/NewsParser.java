@@ -73,7 +73,7 @@ public class NewsParser {
         String dateStr = date.select("p.day").text() + " " + date.select("p.yearInTileNewsOnPageWithAllNews").text();
         String tagsStr = "";
         for (Element tag : tags) {
-            tagsStr += "#" + tag.text() + "\n";
+            tagsStr += "#" + tag.text() + " ";
         }
         String titleStr = element.select("a > div.headline").get(0).text();
         // получаем полную страницу новости для извлечения её текста
