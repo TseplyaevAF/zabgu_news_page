@@ -3,5 +3,5 @@ rem Первый аргумент - количество страниц
 rem Второй аргумент - название файла для сохранения данных
 rem Аргументы прописываются после слова App
 
-java -cp "bin;lib\jsoup-1.15.4.jar" App 12 data.csv
+java -cp "bin;lib\*;lib\opencsv\*" App 2 data2.csv previews2
 pause

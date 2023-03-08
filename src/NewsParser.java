@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.jsoup.*;
 import org.jsoup.nodes.*;
@@ -15,7 +16,7 @@ public class NewsParser {
     private String newsPageUrl;
     private String previewsDirectory;
 
-    private ArrayList<String[]> dataLines = new ArrayList<>();
+    private List<String[]> dataLines = new ArrayList<>();
 
     public NewsParser(String webSiteUrl, String newsPageUrl, String previewsDirectory) {
         this.webSiteUrl = webSiteUrl;
@@ -29,7 +30,7 @@ public class NewsParser {
      * @return возвращает коллекцию из данных по каждой новости
      * @throws Exception
      */
-    public ArrayList<String[]> parseNewsPage(int pageNum) throws Exception {
+    public List<String[]> parseNewsPage(int pageNum) throws Exception {
         Document page = getPage(newsPageUrl + pageNum);
                 
         // метод select возвращает список элементов
