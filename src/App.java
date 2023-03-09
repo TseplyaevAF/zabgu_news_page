@@ -8,15 +8,24 @@ public class App {
     static List<String[]> dataLines = new ArrayList<>();
     static int pageCount = 1;
     static String filename = "data.csv";
+    static String searchStr = "ЗабГУ";
 
     public static void main(String[] args) throws Exception {
-        if (args.length == 3) {
-            pageCount = Integer.parseInt(args[0]);
-            filename = args[1];
-            previewsDir = args[2];
+        if (args.length != 0) {
+            if (args[0].equals("parse")) {
+                pageCount = Integer.parseInt(args[1]);
+                filename = args[2];
+                previewsDir = args[3];
+                newsParse();
+            } else if (args[0].equals("search")) {
+                filename = args[1];
+                searchStr = args[2];
+                countMatchesFromCsv();
+            }
+        } else {
+            newsParse();
+            countMatchesFromCsv();
         }
-        newsParse();
-        countMatches();
     }
 
     public static void newsParse() {
@@ -40,10 +49,20 @@ public class App {
         }
     }
 
-    public static void countMatches()  {
+    public static void countMatchesFromCsv()  {
         try {
             CsvReader csvReader = new CsvReader();
             dataLines = csvReader.read(filename);
+            int count = 0;
+            CountMatcher countMatcher = new CountMatcher();
+            for (String[] data : dataLines) {
+                count += countMatcher.getCountMatches(data[4], searchStr);
+            }
+            CsvWriter csvWriter = new CsvWriter();
+            List<String[]> countMatchesRes = new ArrayList<>();
+            countMatchesRes.add(new String[] {searchStr, Integer.toString(count)});
+            csvWriter.write(countMatchesRes, "count_matches.csv");
+
         } catch (Exception exception) {
             System.out.println(exception.getMessage());
         }
