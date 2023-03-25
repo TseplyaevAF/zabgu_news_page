@@ -33,7 +33,7 @@ public class App {
             NewsParser newsParser = new NewsParser(webSiteUrl, newsPageUrl, previewsDir);
         
             for (int i = 0; i < pageCount; i++) {
-                dataLines = newsParser.parseNewsPage(i + 1);
+                dataLines.addAll(newsParser.parseNewsPage(i + 1));
 
                 // очистка консоли
                 System.out.print("\033[H\033[2J");

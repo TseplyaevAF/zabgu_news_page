@@ -16,8 +16,6 @@ public class NewsParser {
     private String newsPageUrl;
     private String previewsDirectory;
 
-    private List<String[]> dataLines = new ArrayList<>();
-
     public NewsParser(String webSiteUrl, String newsPageUrl, String previewsDirectory) {
         this.webSiteUrl = webSiteUrl;
         this.newsPageUrl = webSiteUrl + newsPageUrl;
@@ -32,6 +30,7 @@ public class NewsParser {
      */
     public List<String[]> parseNewsPage(int pageNum) throws Exception {
         Document page = getPage(newsPageUrl + pageNum);
+        List<String[]> dataLines = new ArrayList<>();
                 
         // метод select возвращает список элементов
         // получаем блок из 9 новостей
