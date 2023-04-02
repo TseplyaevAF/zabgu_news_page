@@ -40,7 +40,10 @@ public class App {
             final int ii = i;
             executor.submit(() -> {
                 try {
-                    dataLines.addAll(newsParser.parseNewsPage(ii + 1));
+                    List<String[]> dataLines2 = newsParser.parseNewsPage(ii + 1);
+                    synchronized (dataLines) {
+                        dataLines.addAll(dataLines2);
+                    }
                             // очистка консоли
                     System.out.print("\033[H\033[2J");
 
