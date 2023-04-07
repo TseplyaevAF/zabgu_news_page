@@ -1,3 +1,4 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -64,6 +65,16 @@ public class App {
         }
 
         // этот код выполнится после завершения всех созданных ранее потоков
+        try {
+            // Создаем экземпляр по работе с БД
+            DBHandler dbHandler = DBHandler.getInstance();
+            for (String[] record : dataLines) {
+                dbHandler.addRecord(record);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         CsvWriter csvWriter = new CsvWriter();
         csvWriter.write(dataLines, filename);
     }
