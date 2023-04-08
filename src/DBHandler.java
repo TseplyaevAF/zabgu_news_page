@@ -5,23 +5,25 @@ import java.sql.SQLException;
 
 import org.sqlite.JDBC;
 
+/**
+ * Класс для работы с базой данных
+ * Реализован с помощью паттерна Singleton
+ */
 public class DBHandler {
     // Константа, в которой хранится адрес подключения
     private static final String CON_STR = "jdbc:sqlite:db/news.db";
 
-    // Используем шаблон одиночка, чтобы не плодить множество
-    // экземпляров класса DbHandler
+    // Приватное статическое поле, содержащее одиночный объект
     private static DBHandler instance = null;
- 
-    public static synchronized DBHandler getInstance() throws SQLException {
-        if (instance == null)
-            instance = new DBHandler();
-        return instance;
-    }
 
     // Объект, в котором будет храниться соединение с БД
     private Connection connection;
 
+    /**
+     * Конструктор по умолчанию с закрытым доступом за пределами класса,
+     * чтобы он не смог возвращать новые объекты
+     * @throws SQLException
+     */
     private DBHandler() throws SQLException {
         // Регистрируем драйвер, с которым будем работать
         // в нашем случае Sqlite
@@ -29,8 +31,24 @@ public class DBHandler {
         // Выполняем подключение к базе данных
         this.connection = DriverManager.getConnection(CON_STR);
     }
+ 
+    // Используем synchronized, чтобы в момент обращения к базе одним потоком, 
+    // другие потоки ожидали его завершения, чтобы не нарушить целостность базы
+    /**
+     * Статический создающий метод
+     * @return возвращает единственный экземпляр класса
+     * @throws SQLException
+     */
+    public static synchronized DBHandler getInstance() throws SQLException {
+        if (instance == null)
+            instance = new DBHandler();
+        return instance;
+    }
 
-    // Добавление новостной записи в БД
+    /**
+     * Метод добавления новостной записи в БД
+     * @param record - строковый массив с данными о записи
+     */
     public void addRecord(String[] record) {
         // Создадим подготовленное выражение, чтобы избежать SQL-инъекций
         try (PreparedStatement statement = this.connection.prepareStatement(
