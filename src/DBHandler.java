@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import org.sqlite.JDBC;
 
@@ -20,6 +21,17 @@ public class DBHandler {
     private Connection connection;
 
     /**
+     * Метод создания таблицы новостей в БД
+     * @throws ClassNotFoundException
+     * @throws SQLException
+     */
+    public void CreateNewsTable() throws ClassNotFoundException, SQLException
+    {
+		Statement statmt = this.connection.createStatement();
+		statmt.execute("CREATE TABLE if not exists 'news' ('id' INTEGER PRIMARY KEY AUTOINCREMENT, 'link' TEXT NOT NULL, 'created_date'	TEXT NOT NULL, 'tags' TEXT, 'title'	TEXT NOT NULL, 'description' TEXT);");
+    }
+
+    /**
      * Конструктор по умолчанию с закрытым доступом за пределами класса,
      * чтобы он не смог возвращать новые объекты
      * @throws SQLException
@@ -29,6 +41,7 @@ public class DBHandler {
         // в нашем случае Sqlite
         DriverManager.registerDriver(new JDBC());
         // Выполняем подключение к базе данных
+        // При отсутствии файла с БД он создается автоматически
         this.connection = DriverManager.getConnection(CON_STR);
     }
  
